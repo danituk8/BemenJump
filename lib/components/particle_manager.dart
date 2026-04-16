@@ -29,7 +29,7 @@ class _Particle {
   }) : maxLife = life;
 }
 
-class ParticleManager extends Component with HasGameRef<BemenJumpGame> {
+class ParticleManager extends Component with HasGameReference<BemenJumpGame> {
   final List<_Particle> _particles = [];
   final Random _random = Random();
 

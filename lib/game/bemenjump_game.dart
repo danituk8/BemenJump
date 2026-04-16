@@ -4,7 +4,6 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../components/player.dart';
-import '../components/platform_block.dart';
 import '../components/level_manager.dart';
 import '../components/background_component.dart';
 import '../components/particle_manager.dart';
@@ -185,17 +184,6 @@ class BemenJumpGame extends FlameGame
     if (player.position.y > 700) {
       gameOver();
     }
-  }
-
-  // 4b2: render is handled by FlameGame automatically
-  // Each component's render() is called by the game loop.
-  // We override here only if we need custom rendering on top.
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    // FlameGame calls render on all children components
-    // SpriteComponents render their sprites
-    // ShapeComponents render their shapes
   }
 
   // Handle keyboard for pause (4b11)

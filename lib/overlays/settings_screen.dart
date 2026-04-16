@@ -109,11 +109,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _CharBtn('EREN', const Color(0xFF8ab060), CharacterType.eren),
+                  _charBtn('EREN', const Color(0xFF8ab060), CharacterType.eren),
                   const SizedBox(width: 8),
-                  _CharBtn('BERU', const Color(0xFF7a7aff), CharacterType.beru),
+                  _charBtn('BERU', const Color(0xFF7a7aff), CharacterType.beru),
                   const SizedBox(width: 8),
-                  _CharBtn('AI', const Color(0xFFed93b1), CharacterType.ai),
+                  _charBtn('AI', const Color(0xFFed93b1), CharacterType.ai),
                 ],
               ),
               
@@ -149,7 +149,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _CharBtn(String name, Color color, CharacterType type) {
+  Widget _charBtn(String name, Color color, CharacterType type) {
     final selected = widget.game.selectedCharacter == type;
     return GestureDetector(
       onTap: () => setState(() => widget.game.selectedCharacter = type),

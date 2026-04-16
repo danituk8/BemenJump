@@ -17,7 +17,7 @@ import '../game/bemenjump_game.dart';
 //      - Clamping values within valid ranges
 // ============================================================
 
-class LevelManager extends Component with HasGameRef<BemenJumpGame> {
+class LevelManager extends Component with HasGameReference<BemenJumpGame> {
   final int level;
   final Random _random = Random();
   

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git remote *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Read(//c/Users/damasa/.claude/projects/c--Users-damasa-Desktop-bemenjump/memory//**)",
+      "Read(//c/Users/damasa/.claude/projects/c--Users-damasa-Desktop-bemenjump/memory/**)",
+      "Bash(flutter analyze *)"
+    ]
+  }
+}

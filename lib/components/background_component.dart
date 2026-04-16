@@ -14,7 +14,7 @@ import '../game/bemenjump_game.dart';
 //      This component is always visible (visibility = true)
 // ============================================================
 
-class BackgroundComponent extends Component with HasGameRef<BemenJumpGame> {
+class BackgroundComponent extends Component with HasGameReference<BemenJumpGame> {
   
   // Star positions for parallax effect
   final List<_Star> _stars = [];
@@ -36,7 +36,7 @@ class BackgroundComponent extends Component with HasGameRef<BemenJumpGame> {
 
   @override
   void render(Canvas canvas) {
-    final cameraY = gameRef.camera.viewfinder.position.y;
+    final cameraY = game.cam.viewfinder.position.y;
     
     // 4b10: Background gradient that changes with height
     // Lower = dark blue/purple, Higher = dark space black

@@ -30,7 +30,7 @@ import 'platform_block.dart';
 enum PlayerState { idle, run, jump, fall }
 
 class Player extends SpriteAnimationGroupComponent<PlayerState>
-    with HasGameRef<BemenJumpGame>, KeyboardHandler, CollisionCallbacks {
+    with HasGameReference<BemenJumpGame>, KeyboardHandler, CollisionCallbacks {
   
   final CharacterType characterType;
   
