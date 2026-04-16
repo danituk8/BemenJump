@@ -1,0 +1,9 @@
+{
+  "name": "BemenJump",
+  "short_name": "BemenJump",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0a12",
+  "theme_color": "#f0c040",
+  "description": "A JumpKing-style platformer built with Flutter Flame"
+}
