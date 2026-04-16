@@ -38,7 +38,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   static const double gravity = 980.0;
   static const double maxJumpForce = -500.0;
   static const double minJumpForce = -200.0;
-  static const double chargeRate = 800.0;
+  static const double chargeRate = 1.0; // fills 0→1 in ~1 second
   static const double moveSpeed = 120.0;
   static const double maxFallSpeed = 600.0;
   

@@ -174,10 +174,12 @@ class BemenJumpGame extends FlameGame
       score = ((600 - highestY) / 10).toInt().clamp(0, 99999);
     }
     
-    // Smooth camera follow
+    // Smooth camera follow with lerp (avoids shake)
+    final targetY = player.position.y - 150;
+    final currentY = cam.viewfinder.position.y;
     cam.viewfinder.position = Vector2(
-      200, // Fixed X center
-      player.position.y - 100, // Follow player Y with offset
+      200,
+      currentY + (targetY - currentY) * (8.0 * dt).clamp(0.0, 1.0),
     );
     
     // Check if player fell below the start
