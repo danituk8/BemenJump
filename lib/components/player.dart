@@ -40,12 +40,13 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   static const double minJumpForce = -200.0;
   static const double chargeRate = 2.0; // fills 0→1 in ~0.5 seconds
   static const double moveSpeed = 120.0;
-  static const double maxFallSpeed = 600.0;
+  static const double maxFallSpeed = 400.0;
 
   // Grace period so collision jitter doesn't cut off the charge
   // (Flame's onCollisionEnd fires even on minor hitbox fluctuations)
   static const double _groundGrace = 0.15; // 150 ms
   double _groundTimer = 0.0;
+  final Vector2 _prevPosition = Vector2.zero();
 
   // Physics state
   Vector2 velocity = Vector2.zero();
@@ -363,10 +364,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   // 4b2: update - physics and input processing every frame
   @override
   void update(double dt) {
-    super.update(dt);
+    // Cap physDt to prevent large-frame tunneling (startup spike or lag)
+    final physDt = dt.clamp(0.0, 1.0 / 30.0);
+    super.update(physDt);
+
+    // Snapshot position before physics so onCollisionStart can check entry direction
+    _prevPosition.setFrom(position);
 
     // Tick down ground grace timer each frame
-    if (_groundTimer > 0) _groundTimer = (_groundTimer - dt).clamp(0.0, _groundGrace);
+    if (_groundTimer > 0) _groundTimer = (_groundTimer - physDt).clamp(0.0, _groundGrace);
 
     // JumpKing mechanics: charge jump while on ground
     if (isOnGround) {
@@ -380,36 +386,36 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         velocity.x = moveSpeed;
         facing = 1;
       }
-      
+
       // Charge jump
       if (jumpPressed && !isCharging) {
         isCharging = true;
         chargeAmount = 0;
       }
       if (isCharging && jumpPressed) {
-        chargeAmount = (chargeAmount + chargeRate * dt).clamp(0, 1);
+        chargeAmount = (chargeAmount + chargeRate * physDt).clamp(0, 1);
       }
       if (isCharging && !jumpPressed) {
         // Release jump!
         final jumpForce = minJumpForce + (maxJumpForce - minJumpForce) * chargeAmount;
         velocity.y = jumpForce;
-        
+
         // Add horizontal momentum based on direction
         if (moveLeft) velocity.x = -moveSpeed * 1.5;
         if (moveRight) velocity.x = moveSpeed * 1.5;
-        
+
         _groundTimer = 0; // explicitly leave ground
         isCharging = false;
         chargeAmount = 0;
       }
     } else {
       // In air: apply gravity, no horizontal control (JumpKing style!)
-      velocity.y = (velocity.y + gravity * dt).clamp(-1000, maxFallSpeed);
+      velocity.y = (velocity.y + gravity * physDt).clamp(-1000, maxFallSpeed);
     }
-    
+
     // Apply velocity
-    position.x += velocity.x * dt;
-    position.y += velocity.y * dt;
+    position.x += velocity.x * physDt;
+    position.y += velocity.y * physDt;
     
     // Wall boundaries
     position.x = position.x.clamp(20, 380);
@@ -446,15 +452,18 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    
+
     if (other is PlatformBlock && velocity.y >= 0) {
-      // Landing on platform from above
       final platformTop = other.position.y;
-      if (position.y <= platformTop + 10) {
+      // Confirm top collision: hitbox bottom was at or above the platform top
+      // last frame (before this frame's physics moved us into the platform).
+      // Hitbox sits 2px above position.y due to the hitbox offset (Vector2(10,2)).
+      final prevHitboxBottom = _prevPosition.y - 2;
+      if (prevHitboxBottom <= platformTop) {
         position.y = platformTop;
         velocity.y = 0;
         velocity.x = 0;
-        _groundTimer = _groundGrace; // refresh grace timer
+        _groundTimer = _groundGrace;
       }
     }
   }
