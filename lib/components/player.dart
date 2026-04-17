@@ -131,6 +131,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       case CharacterType.ai:
         _drawAi(canvas, state, frame);
         break;
+      case CharacterType.gorilla:
+        _drawGorilla(canvas, state, frame);
+        break;
     }
   }
 
@@ -358,6 +361,82 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       _rect(c, cx+10, ly, 3, 2, sk);
       _rect(c, cx+9, ly+2, 4, 4, boot);
       _rect(c, cx+9, ly+2, 4, 1, bootL);
+    }
+  }
+
+  // =================== GORILA ===================
+  void _drawGorilla(Canvas c, PlayerState state, int frame) {
+    const fur   = Color(0xFF2a1808);
+    const furM  = Color(0xFF4a2e14);
+    const muzzle = Color(0xFF9a7850);
+    const eyeY  = Color(0xFFffe050);
+    const dark  = Color(0xFF080400);
+    const chestL = Color(0xFF6a4020);
+
+    double yOff = 0;
+    if (state == PlayerState.jump) yOff = -2;
+    if (state == PlayerState.idle && frame % 2 == 1) yOff = -0.5;
+
+    final bx = 14.0, by = 1.0 + yOff;
+
+    // Crest (gorilla sagittal crest)
+    _rect(c, bx+5, by, 8, 2, fur);
+    // Skull
+    _rect(c, bx+3, by+1, 12, 6, fur);
+    _rect(c, bx+2, by+2, 14, 5, fur);
+    // Ears
+    _rect(c, bx, by+3, 3, 4, fur);
+    _rect(c, bx+15, by+3, 3, 4, fur);
+    _px(c, bx+1, by+4, furM);
+    _px(c, bx+16, by+4, furM);
+    // Brow ridge (prominent)
+    _rect(c, bx+2, by+7, 14, 2, dark);
+    _rect(c, bx+3, by+8, 12, 1, fur);
+    // Face
+    _rect(c, bx+2, by+8, 14, 8, fur);
+    // Eyes (small, deep-set)
+    _rect(c, bx+3, by+8, 4, 3, furM);
+    _rect(c, bx+11, by+8, 4, 3, furM);
+    _px(c, bx+4, by+9, eyeY); _px(c, bx+5, by+9, eyeY);
+    _px(c, bx+12, by+9, eyeY); _px(c, bx+13, by+9, eyeY);
+    _px(c, bx+5, by+10, dark); _px(c, bx+12, by+10, dark);
+    // Muzzle
+    _rect(c, bx+5, by+11, 8, 5, muzzle);
+    _rect(c, bx+4, by+12, 10, 3, muzzle);
+    _px(c, bx+7, by+12, dark); _px(c, bx+10, by+12, dark);
+    _rect(c, bx+6, by+14, 6, 1, dark);
+    // Neck
+    _rect(c, bx+6, by+16, 6, 2, fur);
+    // Body (wide)
+    final tby = by + 18;
+    _rect(c, bx, tby, 18, 2, fur);
+    _rect(c, bx+1, tby+2, 16, 10, fur);
+    _rect(c, bx+2, tby+3, 14, 8, furM);
+    _rect(c, bx+4, tby+2, 10, 7, chestL);
+    _rect(c, bx+3, tby+10, 12, 4, fur);
+    // Long arms (signature gorilla)
+    _rect(c, bx-2, tby+1, 4, 13, fur);
+    _rect(c, bx-3, tby+13, 6, 3, muzzle);
+    _rect(c, bx+16, tby+1, 4, 13, fur);
+    _rect(c, bx+15, tby+13, 6, 3, muzzle);
+    // Legs
+    final lby = tby + 14.0;
+    if (state == PlayerState.run) {
+      final off = frame % 2 == 0 ? -1.0 : 1.0;
+      _rect(c, bx+2, lby+off, 5, 7, fur);
+      _rect(c, bx+11, lby-off, 5, 7, fur);
+      _rect(c, bx+1, lby+6+off, 7, 3, muzzle);
+      _rect(c, bx+10, lby+6-off, 7, 3, muzzle);
+    } else if (state == PlayerState.jump || state == PlayerState.fall) {
+      _rect(c, bx+2, lby-2, 5, 6, fur);
+      _rect(c, bx+11, lby-2, 5, 6, fur);
+      _rect(c, bx+1, lby+3, 7, 2, muzzle);
+      _rect(c, bx+10, lby+3, 7, 2, muzzle);
+    } else {
+      _rect(c, bx+2, lby, 5, 7, fur);
+      _rect(c, bx+11, lby, 5, 7, fur);
+      _rect(c, bx+1, lby+6, 7, 3, muzzle);
+      _rect(c, bx+10, lby+6, 7, 3, muzzle);
     }
   }
 

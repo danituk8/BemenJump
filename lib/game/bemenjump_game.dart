@@ -30,7 +30,7 @@ import '../components/particle_manager.dart';
 //      component's update(dt) is called by the game loop.
 // ============================================================
 
-enum CharacterType { eren, beru, ai }
+enum CharacterType { eren, beru, ai, gorilla }
 
 class BemenJumpGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {

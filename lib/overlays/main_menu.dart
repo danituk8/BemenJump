@@ -67,9 +67,11 @@ class _MainMenuState extends State<MainMenu> {
             ),
             const SizedBox(height: 50),
 
-            // Character selector
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            // Character selector (4b9: includes gorilla)
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12,
+              runSpacing: 12,
               children: [
                 _CharacterOption(
                   type: CharacterType.eren,
@@ -78,7 +80,6 @@ class _MainMenuState extends State<MainMenu> {
                   isSelected: widget.game.selectedCharacter == CharacterType.eren,
                   onTap: () => _selectCharacter(CharacterType.eren),
                 ),
-                const SizedBox(width: 16),
                 _CharacterOption(
                   type: CharacterType.beru,
                   name: 'BERU',
@@ -86,13 +87,20 @@ class _MainMenuState extends State<MainMenu> {
                   isSelected: widget.game.selectedCharacter == CharacterType.beru,
                   onTap: () => _selectCharacter(CharacterType.beru),
                 ),
-                const SizedBox(width: 16),
                 _CharacterOption(
                   type: CharacterType.ai,
                   name: 'AI',
                   accentColor: const Color(0xFFed93b1),
                   isSelected: widget.game.selectedCharacter == CharacterType.ai,
                   onTap: () => _selectCharacter(CharacterType.ai),
+                ),
+                // 4b9: Gorila — nuevo personaje tipo gorila pixel-art
+                _CharacterOption(
+                  type: CharacterType.gorilla,
+                  name: 'GORILA',
+                  accentColor: const Color(0xFF9a7850),
+                  isSelected: widget.game.selectedCharacter == CharacterType.gorilla,
+                  onTap: () => _selectCharacter(CharacterType.gorilla),
                 ),
               ],
             ),
@@ -223,6 +231,8 @@ class _CharacterPainter extends CustomPainter {
         _drawBeru(canvas);
       case CharacterType.ai:
         _drawAi(canvas);
+      case CharacterType.gorilla:
+        _drawGorilla(canvas);
     }
   }
 
@@ -394,6 +404,52 @@ class _CharacterPainter extends CustomPainter {
     _rect(c, cx + 10, cy + 26, 3, 2, sk);
     _rect(c, cx + 9, cy + 28, 4, 4, boot);
     _rect(c, cx + 9, cy + 28, 4, 1, bootL);
+  }
+
+  // 4b9: Gorila pixel-art (preview estático para el menú)
+  void _drawGorilla(Canvas c) {
+    const fur    = Color(0xFF2a1808);
+    const furM   = Color(0xFF4a2e14);
+    const muzzle = Color(0xFF9a7850);
+    const eyeY   = Color(0xFFffe050);
+    const dark   = Color(0xFF080400);
+    const chestL = Color(0xFF6a4020);
+    const bx = 14.0, by = 1.0;
+
+    _rect(c, bx+5, by, 8, 2, fur);
+    _rect(c, bx+3, by+1, 12, 6, fur);
+    _rect(c, bx+2, by+2, 14, 5, fur);
+    _rect(c, bx, by+3, 3, 4, fur);
+    _rect(c, bx+15, by+3, 3, 4, fur);
+    _px(c, bx+1, by+4, furM); _px(c, bx+16, by+4, furM);
+    _rect(c, bx+2, by+7, 14, 2, dark);
+    _rect(c, bx+3, by+8, 12, 1, fur);
+    _rect(c, bx+2, by+8, 14, 8, fur);
+    _rect(c, bx+3, by+8, 4, 3, furM);
+    _rect(c, bx+11, by+8, 4, 3, furM);
+    _px(c, bx+4, by+9, eyeY); _px(c, bx+5, by+9, eyeY);
+    _px(c, bx+12, by+9, eyeY); _px(c, bx+13, by+9, eyeY);
+    _px(c, bx+5, by+10, dark); _px(c, bx+12, by+10, dark);
+    _rect(c, bx+5, by+11, 8, 5, muzzle);
+    _rect(c, bx+4, by+12, 10, 3, muzzle);
+    _px(c, bx+7, by+12, dark); _px(c, bx+10, by+12, dark);
+    _rect(c, bx+6, by+14, 6, 1, dark);
+    _rect(c, bx+6, by+16, 6, 2, fur);
+    final tby = by + 18;
+    _rect(c, bx, tby, 18, 2, fur);
+    _rect(c, bx+1, tby+2, 16, 10, fur);
+    _rect(c, bx+2, tby+3, 14, 8, furM);
+    _rect(c, bx+4, tby+2, 10, 7, chestL);
+    _rect(c, bx+3, tby+10, 12, 4, fur);
+    _rect(c, bx-2, tby+1, 4, 13, fur);
+    _rect(c, bx-3, tby+13, 6, 3, muzzle);
+    _rect(c, bx+16, tby+1, 4, 13, fur);
+    _rect(c, bx+15, tby+13, 6, 3, muzzle);
+    final lby = tby + 14.0;
+    _rect(c, bx+2, lby, 5, 7, fur);
+    _rect(c, bx+11, lby, 5, 7, fur);
+    _rect(c, bx+1, lby+6, 7, 3, muzzle);
+    _rect(c, bx+10, lby+6, 7, 3, muzzle);
   }
 
   @override
